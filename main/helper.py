@@ -2,33 +2,16 @@ import json
 import logging
 import os
 from enum import Enum
-from pathlib import Path
-
-
-def create_sample_file():
-    data = {"Сообщение1": "Ответ1",
-            "Сообщение2": "Ответ2",
-            "Сообщение3": "Ответ3",
-            "Сообщение4": "Ответ5",
-            "Сделай меня админом": "А ху ху не хо хо?"}
-
-    def write_to_file(data_to_write):
-        path = Path(__file__).parent / "data" / "sample_file.json"
-
-        with open(path, "w") as write_file:
-            j = json.dumps(data_to_write, ensure_ascii=False, indent=4, sort_keys=True)
-            write_file.write(j)
-            print(j)
-
-    write_to_file(data)
 
 
 def load_dictionary(root_dir, dict_type):
+    with open(os.path.join(root_dir, dict_type.value), encoding='utf-8') as json_file:
+        dictionary = json.load(json_file)
+        logging.info("File {} loaded with content: \n {}".format(json_file.name,
+                                                                 json.dumps(dictionary, ensure_ascii=False, indent=4,
+                                                                            sort_keys=True)))
+        return dictionary
 
-    with open(os.path.join(root_dir, dict_type.value)) as json_file:
-        dict = json.load(json_file)
-        logging.debug("File {} loaded with content: \n {}".format(json_file.name, json.dumps(dict, ensure_ascii=False, indent=4, sort_keys=True)))
-        return dict
 
 class ChatDict(Enum):
     User = os.path.join("data", "conversation_dictionary.json")
@@ -52,6 +35,7 @@ def log(message, message_type, response_to=None):
                 str(message.chat.id),
                 message.text
             ))
+
 
 class MessageType(Enum):
     REQUEST = 1

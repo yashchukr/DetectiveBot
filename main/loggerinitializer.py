@@ -1,7 +1,7 @@
 import logging
 import os.path
-from os import path
 import sys
+from os import path
 
 
 def initialize_logger(output_dir):
@@ -45,7 +45,7 @@ class MessageFilter(logging.Filter):
 
     def filter(self, record):
 
-        if record.message.find("MSG") >-1:
+        if record.message.find("MSG") > -1:
             r = True
         else:
             r = False
